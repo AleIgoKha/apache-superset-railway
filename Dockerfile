@@ -1,4 +1,4 @@
-FROM apache/superset:4.1.4-py313
+FROM apache/superset:4.1.4
 
 USER root
 
