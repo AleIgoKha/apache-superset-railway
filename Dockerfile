@@ -1,4 +1,4 @@
-FROM apache/superset:latest
+FROM apache/superset:4.1.4-py313
 
 USER root
 
@@ -11,18 +11,18 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install mysqlclient psycopg2
 
-ENV ADMIN_USERNAME $ADMIN_USERNAME
-ENV ADMIN_EMAIL $ADMIN_EMAIL
-ENV ADMIN_PASSWORD $ADMIN_PASSWORD
-ENV DATABASE $DATABASE
+ENV ADMIN_USERNAME=$ADMIN_USERNAME \
+    ADMIN_EMAIL=$ADMIN_EMAIL \
+    ADMIN_PASSWORD=$ADMIN_PASSWORD \
+    DATABASE=$DATABASE \
+    SECRET_KEY=$SECRET_KEY \
+    SUPERSET_CONFIG_PATH=/app/superset_config.py
 
 COPY /config/superset_init.sh ./superset_init.sh
 RUN chmod +x ./superset_init.sh
 
 COPY /config/superset_config.py /app/
-ENV SUPERSET_CONFIG_PATH /app/superset_config.py
-ENV SECRET_KEY $SECRET_KEY
 
 USER superset
 
-ENTRYPOINT [ "./superset_init.sh" ]
+ENTRYPOINT ["./superset_init.sh"]
